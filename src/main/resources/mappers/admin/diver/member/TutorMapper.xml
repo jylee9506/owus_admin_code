@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.admin.mapper.diver.member.TutorMapper">
+    <sql id="selected">
+        <if test='state != 0'>
+           and state=#{state}
+        </if>
+        <if test="keyword !=null">
+            and nickname like concat('%',#{keyword},'%')
+        </if>
+    </sql>
+
+    <select id="selectList" resultType="com.owus.admin.domain.diver.member.TutorVO">
+        select mno, state, requestdate, nickname
+        from tbl_diver
+        where certassoc is not null
+        <include refid="selected"/>
+        order by requestdate desc
+        limit #{skip}, #{size}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(mno)
+        from tbl_diver
+        where certassoc is not null
+        <include refid="selected"/>
+    </select>
+
+    <select id="selectOne" resultType="com.owus.admin.domain.diver.member.TutorVO">
+        select *
+        from tbl_diver
+        where mno = #{mno}
+    </select>
+
+    <update id="approve">
+        update tbl_diver
+        set state =#{state} ,tutorflag =#{tutorflag},approvedate=now()
+        where mno =#{mno}
+    </update>
+
+    <select id="getOne" resultType="com.owus.admin.domain.diver.member.TutorVO">
+        select mt.name,mt.phone, td.nickname,td.birthdate,td.gender,td.certassoc,td.certnum,td.mno,td.state
+        from tbl_member mt
+                 left join tbl_diver td
+                           on mt.mno = td.mno
+        where mt.mno=#{mno}
+
+
+    </select>
+
+
+
+</mapper>

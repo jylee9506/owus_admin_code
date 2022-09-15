@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.admin.mapper.ask.AskMapper">
+    <sql id="search">
+        <where>
+            (a.bno > 0 AND a.delFlag = 0 AND a.mtype = #{mtype})
+            <if test="keyword != null and types.length != 0">
+                AND
+                <foreach collection="types" item="item" separator=" OR " open="(" close=")">
+                    <if test='item == "t"'>
+                        a.title like concat('%', #{keyword}, '%')
+                    </if>
+                    <if test='item == "c"'>
+                        a.content like concat('%', #{keyword}, '%')
+                    </if>
+                    <if test='item == "w"'>
+                        v.nickname like concat('%', #{keyword}, '%')
+                    </if>
+                </foreach>
+            </if>
+            <if test="category != 0">
+                AND a.category = #{category}
+            </if>
+            <if test="state == 1">
+                AND a.answerdate is null
+            </if>
+            <if test="state == 2">
+                AND a.answerdate is not null
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectList" resultType="com.owus.admin.domain.ask.AskVO">
+        select a.*, v.nickname from tbl_ask a
+        left join view_members_info v on a.mno = v.mno
+
+        <include refid="search"/>
+
+        order by a.bno desc limit #{skip}, #{size}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(bno) from tbl_ask a
+        left join view_members_info v on a.mno = v.mno
+        <include refid="search"/>
+    </select>
+
+    <select id="selectOne" resultType="com.owus.admin.domain.ask.AskVO">
+        select a.*, v.nickname from tbl_ask a
+        left join view_members_info v on a.mno = v.mno
+        where a.bno = #{bno}
+    </select>
+
+    <update id="updateReplyCount">
+        update tbl_ask
+        set replyCount = replyCount + #{amount}
+        where bno = #{bno}
+    </update>
+
+    <insert id="insert">
+        <selectKey resultType="int" keyProperty="bno" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into tbl_ask (mno, mtype, title, content, category, mainimg)
+        select #{mno}, v.mtype, #{title}, #{content}, #{category}, #{mainImg} from view_members_info v
+        where v.mno = #{mno}
+    </insert>
+
+    <delete id="delete">
+        update tbl_ask
+        set delFlag = 1
+        where bno = ${bno}
+    </delete>
+
+    <update id="update">
+        update tbl_ask
+        set title = #{title},
+            content = #{content},
+            category = #{category},
+            mainimg = #{mainImg},
+            updatedate = now()
+        where bno = ${bno}
+    </update>
+
+    <update id="answerUpdate">
+        update tbl_ask
+        set answerdate = now()
+        where bno = ${bno}
+    </update>
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.mypage.review.ReviewMapper">
+
+    <sql id="search">
+        <if test="state != 2">
+            and trv.state = #{state}
+        </if>
+        <if test="keyword != null ">
+            <foreach collection="types" item="item"  open="and ( " close=")">
+                <if test='item == "p"'>
+                    tp.pdname like concat('%',#{keyword},'%')
+                </if>
+                <if test='item =="c"'>
+                    trv.content like concat('%',#{keyword},'%')
+                </if>
+                <if test='item == "w"'>
+                    tbm.name like concat('%',#{keyword},'%')
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="selectList" resultType="com.owus.shop.domain.mypage.review.ReviewVO">
+        SELECT rno, trv.rsvno, tp.pdname, trv.content, score, tbm.name, trv.regdate, trv.state from tbl_reservation_review trv
+              left join tbl_reservation tr on trv.rsvno = tr.rsvno
+              left join tbl_member tbm on tr.mno = tbm.mno
+              left join tbl_product tp on tp.pdno = tr.pdno
+              where trv.delflag = 0 and rno > 0
+            <include refid="search"></include>
+            order by trv.state asc
+            limit #{skip},#{size};
+    </select>
+
+    <select id="getTotal" resultType="int">
+        SELECT count (rno) from tbl_reservation_review trv
+        left join tbl_reservation tr on trv.rsvno = tr.rsvno
+        left join tbl_member tbm on tr.mno = tbm.mno
+        left join tbl_product tp on tp.pdno = tr.pdno
+        where trv.delflag = 0 and rno > 0
+        <include refid="search"></include>
+    </select>
+
+    <select id="selectOne" resultType="com.owus.shop.domain.mypage.review.ReviewVO">
+        select rno, tm.name ,score, trv.state , trv.content, trv.regdate, trv.updatedate, trv.rsvno,
+            tp.pdno,tp.mno ,tp.content pdcontent , tp.pdname,  tr.price resprice, tp.price, tp.dprice, tp.mainimg, tp.pdlimit, tp.regdate pdregdate,tp.updatedate pdupdatedate
+        from tbl_reservation_review trv
+        left join tbl_reservation tr ON trv.rsvno = tr.rsvno
+        left join tbl_member tm on tr.mno = tm.mno
+        left join tbl_product tp on tp.pdno = tr.pdno
+        where rno = #{rno};
+    </select>
+
+    <update id="updateState">
+        update tbl_reservation_review set state = #{state} where rno = #{rno}
+    </update>
+
+</mapper>

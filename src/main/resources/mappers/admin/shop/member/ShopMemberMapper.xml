@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.admin.mapper.shop.member.ShopMemberMapper">
+    <sql id="search">
+        <where>
+            (s.mno > 0)
+            <if test="keyword != null and types.length != 0">
+                AND
+                <foreach collection="types" item="item" separator=" OR " open="(" close=")">
+                    <if test='item == "w"'>
+                        name like concat('%', #{keyword}, '%')
+                    </if>
+                    <if test='item == "a"'>
+                        address like concat('%', #{keyword}, '%')
+                    </if>
+                    <if test='item == "n"'>
+                        bznum like concat('%', #{keyword}, '%')
+                    </if>
+                </foreach>
+            </if>
+            <if test="state != 0">
+                AND state = #{state}
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="selectList" resultType="com.owus.admin.domain.shop.member.ShopMemberVO">
+        select s.mno, m.id, m.name, m.address, s.requestdate, s.approvedate, m.delflag, s.state from tbl_shop s
+        inner join tbl_member m on m.mno = s.mno
+        <include refid="search"/>
+        order by s.requestdate desc
+        limit #{skip}, #{size}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(s.mno) from tbl_shop s
+        inner join tbl_member m on m.mno = s.mno
+        <include refid="search"/>
+    </select>
+
+    <select id="selectOne" resultType="com.owus.admin.domain.shop.member.ShopMemberVO">
+        select s.*, m.id, m.name, m.email, m.phone, m.address, m.updatedate, m.delflag from tbl_shop s
+        inner join tbl_member m on s.mno = m.mno
+        where s.mno = #{mno}
+    </select>
+
+    <insert id="insert">
+        <selectKey resultType="int" keyProperty="bno" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into tbl_ask (mno, mtype, title, content, category)
+        select #{mno}, m.mtype, #{title}, #{content}, #{category} from view_members_nickname m
+        where m.mno = #{mno}
+    </insert>
+
+    <delete id="delete">
+        update tbl_ask
+        set delFlag = 1
+        where bno = ${bno}
+    </delete>
+
+    <update id="updateState">
+        update tbl_shop set state = #{state}, approvedate = now()
+        where mno = #{mno}
+    </update>
+
+    <update id="update">
+        update tbl_member
+        set name = #{name},
+            phone = #{phone},
+            address = #{address},
+            updatedate = now()
+        where mno = #{mno}
+    </update>
+
+    <update id="updateSub">
+        update tbl_shop
+        set bznum = #{bzNum}
+        where mno = #{mno}
+    </update>
+
+    <update id="answerUpdate">
+        update tbl_ask
+        set answerdate = now()
+        where bno = ${bno}
+    </update>
+
+</mapper>

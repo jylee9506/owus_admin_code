@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.mypage.review.ReviewReplyMapper">
+    <insert id="insert">
+        INSERT INTO tbl_shop_answer(mno, rno, content)
+        value(#{mno},#{rno},#{content})
+    </insert>
+
+    <select id="selectOne" resultType="com.owus.shop.domain.mypage.review.ReplyVO">
+        select tsa.mno, tsa.rno, tm.name, tsa.content, tsa.regdate  from tbl_shop_answer tsa
+        left join tbl_member tm on tsa.mno = tm.mno
+        where tsa.delflag =0 and rno =#{rno};
+    </select>
+
+
+    <update id="update">
+        update tbl_shop_answer set content = #{content} , updatedate = now() where rno = #{rno};
+    </update>
+
+    <delete id="delete">
+        delete from tbl_shop_answer where rno = #{rno};
+    </delete>
+</mapper>

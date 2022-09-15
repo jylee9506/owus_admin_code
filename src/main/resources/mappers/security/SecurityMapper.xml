@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.security.mapper.SecurityMapper">
+
+    <resultMap id="memberMap" type="com.owus.security.domain.MemberVO">
+        <result property="mno" column="mno"/>
+        <result property="id" column="id"/>
+        <result property="pw" column="pw"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="phone" column="phone"/>
+        <result property="mtype" column="mtype"/>
+        <result property="ltype" column="ltype"/>
+        <result property="regDate" column="regdate"/>
+        <result property="updateDate" column="updatedate"/>
+        <collection property="authList" resultMap="authMap"/>
+    </resultMap>
+
+    <resultMap id="authMap" type="com.owus.security.domain.AuthVO">
+        <result property="id" column="id"/>
+        <result property="roleName" column="roleName"/>
+    </resultMap>
+
+    <select id="selectOne" resultMap="memberMap">
+        select mem.*, auth.rolename from tbl_member mem
+        inner join tbl_auth auth on mem.mno = auth.mno
+        where mem.id = #{id} and delflag = 0;
+    </select>
+
+</mapper>

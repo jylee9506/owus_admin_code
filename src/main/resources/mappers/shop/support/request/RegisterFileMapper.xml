@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.support.request.RegisterFileMapper">
+
+    <insert id="insert">
+insert into tbl_attach (uuid,filepath,filename,img)
+values (#{uuid},#{filepath},#{filename},#{img})
+
+    </insert>
+
+    <delete id="delete">
+        delete  from tbl_shop where mno = #{mno}
+    </delete>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.mypage.item.ShopItemMapper">
+
+    <select id="selectList" resultType="com.owus.admin.domain.shop.member.ShopItemVO">
+        select * from tbl_product
+        where mno = #{mno} and pdno > 0 and delflag = 0
+        order by pdno desc
+        limit #{listDTO.skip}, #{listDTO.size}
+    </select>
+
+    <insert id="insert">
+        <selectKey resultType="int" keyProperty="pdno" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into tbl_product (mno, dpno, pdname, content, pdlimit, mainimg, price, dprice, regdate, updatedate)
+        value (#{mno}, #{dpno}, #{pdName}, #{content}, #{pdLimit}, #{mainImg}, #{price}, #{dprice}, now(), now())
+    </insert>
+
+    <select id="selectOne" resultType="com.owus.admin.domain.shop.member.ShopItemVO">
+        select * from tbl_product
+        where pdno = #{id}
+    </select>
+
+    <select id="selectDpointList" resultType="com.owus.admin.domain.shop.member.ShopDpointVO">
+        select * from tbl_dpoint
+        where mno = #{mno}
+    </select>
+
+    <select id="selectDpoint" resultType="com.owus.admin.domain.shop.member.ShopDpointVO">
+        select * from tbl_dpoint
+        where dpno = #{dpno}
+    </select>
+
+    <update id="delete">
+        update tbl_product set delflag = 1
+        where pdno = #{pdno}
+    </update>
+
+    <update id="update">
+        update tbl_product set
+            dpno = #{dpno}, pdname = #{pdName},
+            content = #{content}, pdlimit = #{pdLimit},
+            mainimg = #{mainImg}, price = #{price},
+            dprice = #{dprice}, updatedate = now()
+        where pdno = #{pdno}
+    </update>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>    <!--    xml 형식 ( 레퍼 (sql 문 대신) 로 쓰겠다 라는 의미-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--    mapper 안에는 클래스명을 넣어준다-->
+<mapper namespace="com.owus.common.mapper.FileMapper">
+
+    <insert id="insert">
+        insert into tbl_attach (uuid, filename, filepath, img)
+        values (#{uuid}, #{filename}, #{filepath}, #{img})
+    </insert>
+
+    <insert id="insertBoard">
+        insert into tbl_attach (uuid, filename, filepath, img, bno)
+        values (#{uuid}, #{filename}, #{filepath}, #{img}, #{bno})
+    </insert>
+
+    <insert id="insertMapping">
+        insert into tbl_ask_file (bno, uuid)
+        values (ifnull(#{bno}, last_insert_id()), #{uuid})
+    </insert>
+
+    <select id="selectMapping" resultType="String">
+        select uuid from tbl_ask_file where bno = #{bno}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_attach
+        where uuid in (select uuid from tbl_ask_file where bno = #{bno});
+    </delete>
+
+</mapper>

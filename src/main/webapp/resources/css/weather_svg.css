@@ -1,0 +1,70 @@
+.wt-1 {background-image: url(/resources/svg/weather/icon_flat_wt1.svg);}
+.wt-2 {background-image: url(/resources/svg/weather/icon_flat_wt2.svg);}
+.wt-3 {background-image: url(/resources/svg/weather/icon_flat_wt3.svg);}
+.wt-4 {background-image: url(/resources/svg/weather/icon_flat_wt4.svg);}
+.wt-5 {background-image: url(/resources/svg/weather/icon_flat_wt5.svg);}
+.wt-6 {background-image: url(/resources/svg/weather/icon_flat_wt6.svg);}
+.wt-7 {background-image: url(/resources/svg/weather/icon_flat_wt7.svg);}
+.wt-8 {background-image: url(/resources/svg/weather/icon_flat_wt8.svg);}
+.wt-9 {background-image: url(/resources/svg/weather/icon_flat_wt9.svg);}
+.wt-10 {background-image: url(/resources/svg/weather/icon_flat_wt10.svg);}
+.wt-11 {background-image: url(/resources/svg/weather/icon_flat_wt11.svg);}
+.wt-12 {background-image: url(/resources/svg/weather/icon_flat_wt12.svg);}
+.wt-13 {background-image: url(/resources/svg/weather/icon_flat_wt13.svg);}
+.wt-14 {background-image: url(/resources/svg/weather/icon_flat_wt14.svg);}
+.wt-15 {background-image: url(/resources/svg/weather/icon_flat_wt15.svg);}
+.wt-16 {background-image: url(/resources/svg/weather/icon_flat_wt16.svg);}
+.wt-17 {background-image: url(/resources/svg/weather/icon_flat_wt17.svg);}
+.wt-18 {background-image: url(/resources/svg/weather/icon_flat_wt18.svg);}
+.wt-19 {background-image: url(/resources/svg/weather/icon_flat_wt19.svg);}
+.wt-20 {background-image: url(/resources/svg/weather/icon_flat_wt20.svg);}
+.wt-21 {background-image: url(/resources/svg/weather/icon_flat_wt21.svg);}
+.wt-22 {background-image: url(/resources/svg/weather/icon_flat_wt22.svg);}
+.wt-23 {background-image: url(/resources/svg/weather/icon_flat_wt23.svg);}
+.wt-24 {background-image: url(/resources/svg/weather/icon_flat_wt24.svg);}
+.wt-25 {background-image: url(/resources/svg/weather/icon_flat_wt25.svg);}
+.wt-26 {background-image: url(/resources/svg/weather/icon_flat_wt26.svg);}
+.wt-27 {background-image: url(/resources/svg/weather/icon_flat_wt27.svg);}
+.wt-28 {background-image: url(/resources/svg/weather/icon_flat_wt28.svg);}
+.wt-29 {background-image: url(/resources/svg/weather/icon_flat_wt29.svg);}
+.wt-30 {background-image: url(/resources/svg/weather/icon_flat_wt30.svg);}
+.wt-31 {background-image: url(/resources/svg/weather/icon_flat_wt31.svg);}
+.wt-32 {background-image: url(/resources/svg/weather/icon_flat_wt32.svg);}
+.wt-33 {background-image: url(/resources/svg/weather/icon_flat_wt33.svg);}
+.wt-34 {background-image: url(/resources/svg/weather/icon_flat_wt34.svg);}
+.wt-35 {background-image: url(/resources/svg/weather/icon_flat_wt35.svg);}
+.wt-36 {background-image: url(/resources/svg/weather/icon_flat_wt36.svg);}
+.wt-37 {background-image: url(/resources/svg/weather/icon_flat_wt37.svg);}
+.wt-38 {background-image: url(/resources/svg/weather/icon_flat_wt38.svg);}
+.wt-39 {background-image: url(/resources/svg/weather/icon_flat_wt39.svg);}
+.wt-40 {background-image: url(/resources/svg/weather/icon_flat_wt40.svg);}
+.wt-41 {background-image: url(/resources/svg/weather/icon_flat_wt41.svg);}
+
+.wt-90 {background-image: url(/resources/svg/icon/rainfall.svg);}
+.wt-91 {background-image: url(/resources/svg/icon/water_temperature.svg);}
+.wt-92 {background-image: url(/resources/svg/icon/wave_height.svg);}
+.wt-93 {background-image: url(/resources/svg/icon/big-wave.svg);}
+.wt-94 {background-image: url(/resources/svg/icon/ocean-waves.svg);}
+
+
+.wt-icon {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+.wt-small {
+    width: 50px;
+    height: 50px;
+}
+
+.wt-xsmall {
+    width: 30px;
+    height: 30px;
+}
+
+.wt-mini {
+    width: 20px;
+    height: 20px;
+}

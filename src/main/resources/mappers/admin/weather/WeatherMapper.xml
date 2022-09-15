@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>    <!--    xml 형식 ( 레퍼 (sql 문 대신) 로 쓰겠다 라는 의미-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--    mapper 안에는 클래스명을 넣어준다-->
+<mapper namespace="com.owus.shop.mapper.weather.WeatherMapper">
+
+    <select id="selectListMonth" resultType="com.owus.shop.domain.weather.WeatherVO">
+
+        select * from tbl_weather_month
+        where geoid = #{geoID}
+        order by pubdate, geoid
+
+    </select>
+
+    <select id="selectListWeek" resultType="com.owus.shop.domain.weather.WeatherVO">
+
+        select * from tbl_weather_week
+        where geoid = #{geoID} and pubdate >= #{dateTime}
+        order by pubdate, geoid
+        limit 10
+
+    </select>
+
+</mapper>

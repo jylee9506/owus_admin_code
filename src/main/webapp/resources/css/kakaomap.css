@@ -1,0 +1,191 @@
+/* .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;} */
+/* .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;} */
+/* .info .title {padding: 5px 0 0 10px;height: 30px;background: #52E569;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;} */
+
+/* .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;} */
+.wrap * {padding: 0;margin: 0;}
+.wrap{
+    position: absolute;
+    bottom: 70px;
+    left: 0px;
+
+    margin-left: -144px;
+    text-align: left;
+    overflow: hidden;
+    font-size: 12px;
+    font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;
+    z-index: -1;
+}
+
+.wrap .info{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 286px;
+    height: 135px;
+    border-radius: 5px;
+    /* /* border-bottom: 2px solid #ccc; */
+    border-right: 1px solid #ccc;
+    overflow: hidden;
+    background: #fff;
+
+}
+/* title */
+
+.info .title{
+    padding: 10px 0 5px 10px;
+    height: 50px;
+    background: #52E569;
+    border-bottom: 3px solid yellow;
+    font-size: 18px;
+    font-weight: bold;
+    /*line-height: 5px;*/
+}
+
+/* body */
+.body{
+    display: flex;
+}
+
+.info .body .img{
+    padding: 5px;
+}
+.info .body .img img{
+    width: 80px;height: 80px;
+}
+
+.info .body .desc{
+    margin-top: 4px;
+}
+
+.info .body .content{
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    word-break: keep-all;
+
+}
+
+.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+.info .close:hover {cursor: pointer;}
+
+.arrow {
+    position: absolute;
+    margin-left: -12px;
+    bottom: 60px;
+    width: 22px;
+    height: 12px;
+    background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+
+.modal-point{
+    position: absolute;
+    top: 15px;
+    left: 140px;
+    background-color:gold;
+    border: black;
+    font-size: 10px;
+    color: black;
+    border-radius: 5px;
+    width: 60px;
+    height: 20px;
+}
+
+.modal-point_wrap{
+    display:none;
+    width:600px;
+    height:500px;
+    position:absolute;
+    top:50%;left:50%;
+    margin:-250px 0 0 -250px;
+    background:#e5edf2;
+    border-radius: 5px;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
+.black_bg{
+    display:none;
+    position:absolute;content:"";
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.5);
+    top:0;
+    left:0;z-index:1;
+}
+.modal-point_close{
+    width:26px;
+    height:26px;
+    position:absolute;
+    padding: 5px;
+    top:0px;
+    right:0;
+}
+.modal-point_close>a{
+    display:block;width:100%;
+    height:100%;
+    background:url(https://img.icons8.com/metro/26/000000/close-window.png);
+    text-indent:-9999px;
+}
+
+.modal-point-img{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.modal-point-img img{
+    width: 450px;
+    height: 400px;
+    padding: 15px;
+    margin: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.modal-point-desc{
+    white-space: normal;
+
+}
+.content-box{
+    margin: 20px;
+}
+
+.modal-point-title{
+    margin: 10px 0px 5px 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.modal-point-img img {
+
+    background: #efefef;
+    border: none;
+    border-radius: .5rem;
+    color: #444;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .2rem;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+    -6px -6px 10px rgba(255, 255, 255, .5),
+    6px 6px 8px rgba(255, 255, 255, .075),
+    6px 6px 10px rgba(0, 0, 0, .15);
+
+}
+.modal-point-img img:hover {
+    box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+    -2px -2px 4px rgba(255, 255, 255, .4),
+    2px 2px 2px rgba(255, 255, 255, .05),
+    2px 2px 4px rgba(0, 0, 0, .1);
+}
+.modal-point-img img:active {
+    box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+    inset -2px -2px 4px rgba(255, 255, 255, .5),
+    inset 2px 2px 2px rgba(255, 255, 255, .075),
+    inset 2px 2px 4px rgba(0, 0, 0, .15);
+
+}

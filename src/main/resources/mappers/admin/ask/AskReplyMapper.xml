@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>    <!--    xml 형식 ( 레퍼 (sql 문 대신) 로 쓰겠다 라는 의미-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--    mapper 안에는 클래스명을 넣어준다-->
+<mapper namespace="com.owus.admin.mapper.common.ReplyMapper">
+
+    <select id="selectList" resultType="com.owus.common.domain.ReplyVO">
+        select r.rno, r.mno, r.bno, r.delflag, r.content, r.regdate, v.nickname,
+               (select count(rno) as cnt from tbl_ask_reply r2
+                where (rno > 0 and bno = #{no}) and parent > 0 and r.rno = r2.parent) as cnt
+        from tbl_ask_reply r inner join view_members_info v on v.mno = r.mno
+        where (rno > 0 and bno = #{no}) and parent = 0
+        order by r.rno
+        limit #{listDTO.skip}, #{listDTO.size}
+    </select>
+
+    <select id="selectSubList" resultType="com.owus.common.domain.ReplyVO">
+        select r.rno, r.mno, r.bno, r.parent, r.delflag, r.content, r.regdate, v.nickname
+        from tbl_ask_reply r inner join view_members_info v on v.mno = r.mno
+        where (r.bno = #{no} and r.rno > 0) and r.parent = #{parent}
+        order by r.rno
+
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(rno) from tbl_ask_reply
+        where (bno = #{no} and rno > 0) and parent = #{parent}
+    </select>
+
+    <insert id="insert">
+        insert into tbl_ask_reply (bno, mno, content, parent, mtype)
+        select #{bno}, #{mno}, #{content}, #{parent}, m.mtype from tbl_member m
+        where m.mno = #{mno}
+    </insert>
+
+    <update id="update">
+        update tbl_ask_reply
+        set content = #{content}, delflag = #{delFlag}, updateDate = now()
+        where rno = #{rno}
+    </update>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.owus.shop.mapper.dashboard.ShopDashBoardMapper">
+
+    <select id="summary" resultType="com.owus.shop.domain.dashboard.ReservationSummaryVO">
+      select DATE(r.regdate) dt, count(r.rsvno) totalRsv, sum(r.price) totalPrice, sum(r.tutorcnt)+sum(r.normalcnt) totalPeople from tbl_reservation r
+      where (r.regdate between DATE_ADD(DATE('2022-06-08'), interval -7 day ) AND DATE('2022-06-08')) and r.pdno in (select p.pdno from tbl_product p where mno = #{mno})
+      group by dt order by dt;
+    </select>
+
+    <select id="recentRsv" resultType="com.owus.shop.domain.dashboard.RecentRsvVO">
+        select r.rsvno, p.pdname, p.pdlimit, r.tutorcnt, r.normalcnt, r.startdate, r.enddate, r.regdate from tbl_reservation r
+        inner join tbl_product p on r.pdno = p.pdno
+        where p.mno = #{mno}
+        order by r.rsvno desc
+        limit 10;
+    </select>
+
+</mapper>

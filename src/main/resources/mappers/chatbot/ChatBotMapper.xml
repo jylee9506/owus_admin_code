@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.owus.chatbot.mapper.ChatBotMapper">
+
+    <select id="selectOne" resultType="com.owus.chatbot.domain.ChatBotVO">
+
+        select m.mno, m.email, ifnull(ts.state, 4) as state
+        from tbl_member m
+                 left outer join tbl_shop ts on m.mno = ts.mno
+        where m.email = #{email}
+
+    </select>
+
+
+</mapper>

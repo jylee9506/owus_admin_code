@@ -1,0 +1,29 @@
+.uploadResult{
+  background: #f5f8ff;
+  margin-bottom: 20px;
+  border-radius: 5px 5px;
+}
+
+.uploadResult div{
+  position: relative;
+  border-bottom:1px solid;
+  border-bottom-color: #ced4da;
+  margin-bottom: 15px;
+}
+
+.uploadResult button{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  border: none;
+}
+
+.uploadResult img{
+  width: 100px;
+  height: 100px;
+}
+
+.attachTitle{
+  font-size: 20px;
+  margin-bottom: 15px;
+}

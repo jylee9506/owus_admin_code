@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.owus.admin.mapper.job.JobFileMapper">
+
+    <insert id="insert">
+        insert into tbl_attach (uuid, filepath, filename, img)
+        values (#{uuid}, #{filepath}, #{filename}, #{img})
+    </insert>
+
+    <insert id="insertMapping">
+        insert into tbl_job_file (bno, uuid)
+        values (ifnull(#{bno}, last_insert_id()), #{uuid})
+    </insert>
+
+    <delete id="delete">
+        delete from tbl_attach
+        where uuid in (select uuid from tbl_job_file where bno = #{bno});
+    </delete>
+
+    <select id="selectFiles" resultType="com.owus.common.domain.AttachFileVO">
+        select m.uuid, a.filepath, a.filename
+        from tbl_job_file m inner join tbl_attach a on m.uuid = a.uuid
+        WHERE bno = #{bno}
+    </select>
+
+</mapper>

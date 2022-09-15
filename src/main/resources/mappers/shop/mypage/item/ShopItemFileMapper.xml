@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.mypage.item.ShopItemFileMapper">
+
+    <insert id="insert">
+        insert into tbl_attach (uuid, filename, filepath, img, ord)
+        values (#{uuid}, #{filename}, #{filepath}, #{img}, #{ord})
+    </insert>
+
+    <insert id="insertMapping">
+        insert into tbl_product_file (pdno, uuid)
+        values (ifnull(#{pdno}, last_insert_id()), #{uuid})
+    </insert>
+
+    <select id="selectMapping" resultType="String">
+        select uuid from tbl_product_file where pdno = #{pdno}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_attach
+        where uuid in (select uuid from tbl_product_file where pdno = #{pdno});
+    </delete>
+
+    <select id="selectFiles" resultType="com.owus.common.domain.AttachFileVO">
+        select tpf.uuid , ta.filepath filepath, ta.filename filename, ta.ord, ta.img
+        from tbl_product_file tpf left join tbl_attach ta on tpf.uuid = ta.uuid
+        WHERE pdno = #{no}
+        order by ta.ord asc
+    </select>
+
+</mapper>

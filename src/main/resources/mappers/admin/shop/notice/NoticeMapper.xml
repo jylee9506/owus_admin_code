@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.admin.mapper.shop.notice.NoticeMapper">
+    <sql id="search">
+        <if test="type != null and keyword !=null">
+            <foreach collection="types" item="type" separator=" or " open=" and (" close=")">
+                <if test='type == "t" '>
+                    title like concat('%',#{keyword},'%')
+                </if>
+                <if test='type == "c" '>
+                    content like concat('%',#{keyword},'%')
+                </if>
+                <if test='type == "w" '>
+                    writer like concat('%',#{keyword},'%')
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    <select id="selectList" resultType="com.owus.admin.domain.shop.notice.NoticeVO">
+        SELECT tn.bno , tn.title, tn.content, tm.name, tn.regdate
+        FROM tbl_notice tn
+        LEFT JOIN tbl_member tm on tn.mno = tm.mno
+        where bno > 0 and tn.delflag = 0
+        <include refid="search"></include>
+        order by bno desc limit #{skip}, #{size};
+    </select>
+    <select id="getTotal" resultType="int" >
+        select count(bno) from tbl_notice where bno > 0 and delflag = 0
+        <include refid="search"></include>
+    </select>
+    <select id="selectOne" resultType="com.owus.admin.domain.shop.notice.NoticeVO">
+        SELECT tn.bno , tn.title, tn.content, tm.name, tn.regdate
+        FROM tbl_notice tn
+                 LEFT JOIN tbl_member tm on tn.mno = tm.mno
+        where bno > 0 and bno = #{bno}
+    </select>
+    <insert id="insert">
+        <selectKey resultType="int" keyProperty="bno" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into tbl_notice (title,content,mno)
+        values (#{title},#{content},#{mno})
+    </insert>
+    <update id="update">
+        update tbl_notice set title = #{title} , content = #{content}, updatedate = now() where bno =#{bno}
+    </update>
+    <update id="delete">
+        Update tbl_notice set delflag = 1 where bno = #{bno}
+    </update>
+</mapper>

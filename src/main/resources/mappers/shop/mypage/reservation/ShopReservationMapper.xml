@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.mypage.reservation.ShopReservationMapper">
+
+    <sql id="search">
+        <where>
+            p.mno = #{mno} and rs.rsvno > 0
+            <if test="listDTO.keyword != null and listDTO.types.length != 0">
+                AND
+                <foreach collection="listDTO.types" item="item" separator=" OR " open="(" close=")">
+                    <if test='item == "n"'>
+                        p.pdname like concat('%', #{listDTO.keyword}, '%')
+                    </if>
+                    <if test='item == "w"'>
+                        m.name like concat('%', #{listDTO.keyword}, '%')
+                    </if>
+                </foreach>
+            </if>
+            <if test="listDTO.state != 0">
+                AND state = #{listDTO.state}
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="selectList" resultType="com.owus.shop.dto.mypage.reservation.ReservationListDTO">
+        select rs.rsvno, p.pdname, m.name, rs.tutorcnt, rs.normalcnt, rs.price, rs.regdate, rs.startdate, rs.enddate, rs.state
+        from tbl_reservation rs
+        join tbl_product p on rs.pdno = p.pdno
+        join tbl_member m on rs.mno = m.mno
+        <include refid="search"></include>
+        order by rs.regdate desc
+        limit #{listDTO.skip}, #{listDTO.size}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(*)
+        from tbl_reservation rs
+                 join tbl_product p on rs.pdno = p.pdno
+                 join tbl_member m on rs.mno = m.mno
+        <include refid="search"></include>
+        order by rs.regdate desc;
+    </select>
+
+    <resultMap id="reservationMap" type="com.owus.shop.dto.mypage.reservation.ReservationDTO">
+        <result property="rsvNo" column="rsvno"></result>
+        <result property="pdName" column="pdname"></result>
+        <result property="rsvName" column="rsvName"></result>
+        <result property="price" column="price"></result>
+        <result property="startDate" column="startdate"></result>
+        <result property="endDate" column="enddate"></result>
+        <result property="tutorCnt" column="tutorcnt"></result>
+        <result property="normalCnt" column="normalcnt"></result>
+        <result property="state" column="state"></result>
+        <result property="regDate" column="regdate"></result>
+        <result property="rejectCause" column="rejectcause"></result>
+        <collection property="detailList" resultMap="detailMap"></collection>
+    </resultMap>
+    <resultMap id="detailMap" type="com.owus.shop.domain.mypage.reservation.ReservationDetailVO">
+        <result property="rdNo" column="rdno"></result>
+        <result property="rsvNo" column="rsvno"></result>
+        <result property="name" column="name"></result>
+        <result property="birth" column="birth"></result>
+        <result property="gender" column="gender"></result>
+        <result property="rentalFlag" column="rentalFlag"></result>
+        <result property="footSize" column="footSize"></result>
+        <result property="height" column="height"></result>
+        <result property="weight" column="weight"></result>
+        <result property="tutorFlag" column="tutorflag"></result>
+        <result property="certAssoc" column="certassoc"></result>
+        <result property="certNum" column="certnum"></result>
+    </resultMap>
+
+    <select id="selectOne" resultMap="reservationMap">
+        select rs.rsvno, p.pdname, m.name as rsvName, rs.tutorcnt, rs.normalcnt, rs.price, rs.regdate, rs.startdate, rs.enddate, rs.state, rs.rejectcause, rd.* from tbl_reservation rs
+        join tbl_product p on rs.pdno = p.pdno
+        join tbl_member m on rs.mno = m.mno
+        join tbl_reservation_detail rd on rs.rsvno = rd.rsvno
+        where rs.rsvno = #{rsvno}
+    </select>
+
+    <update id="update">
+        update tbl_reservation set state = #{state}, rejectcause = #{rejectCause} where rsvno = #{rsvNo}
+    </update>
+
+</mapper>

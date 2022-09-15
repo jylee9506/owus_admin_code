@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.mypage.info.InfoDetailsMapper">
+
+    <select id="selectList" resultType="com.owus.admin.domain.diver.member.TutorVO">
+        select * from tbl_diver
+        where smno = #{smno}
+    </select>
+
+    <select id="selectListFacility" resultType="com.owus.shop.domain.mypage.info.FacilityVO">
+        select * from tbl_facility_map tfm
+        left join tbl_facility tf on tf.fno = tfm.fno
+        where mno = #{mno} order by tfm.fno asc ;
+    </select>
+</mapper>

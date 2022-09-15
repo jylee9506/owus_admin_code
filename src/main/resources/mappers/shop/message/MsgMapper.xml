@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.owus.shop.mapper.message.MsgMapper">
+    <sql id="search">
+        <where>
+            m.bno > 0
+            <if test="tabType == 0">
+                AND m.tmno = #{mno}
+            </if>
+            <if test="tabType == 1">
+                AND m.fmno = #{mno}
+            </if>
+
+            <if test="keyword != null and types.length != 0">
+                AND
+                <foreach collection="types" item="item" separator=" OR " open="(" close=")">
+                    <if test='item == "c"'>
+                        m.content like concat('%', #{keyword}, '%')
+                    </if>
+                    <if test='item == "w"'>
+                        vm.nickname like concat('%', #{keyword}, '%') or
+                        vm.name like concat('%', #{keyword}, '%')
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <sql id="searchUser">
+        <where>
+            <if test="keyword != null">
+                m.mno > 0 AND (
+                    m.id like concat('%', #{keyword}, '%') or
+                    m.name like concat('%', #{keyword}, '%') or
+                    d.nickname like concat('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectList" resultType="com.owus.shop.domain.message.MsgVO">
+        select m.bno, m.fmno, m.tmno, m.content, m.senddate, m.readdate,
+        max(case vm.mno when m.fmno then vm.nickname end) fnickname,
+        max(case vm.mno when m.tmno then vm.nickname end) tnickname
+        from view_members_info vm inner join tbl_message m on m.bno > 0 and vm.mno in (m.fmno, m.tmno)
+        <include refid="search"/>
+        group by m.bno
+        order by bno desc
+        limit #{skip}, #{size}
+
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(m.bno)
+        from tbl_message m
+        <include refid="search"/>
+    </select>
+
+    <select id="selectDivers" resultType="com.owus.shop.domain.message.MsgUserVO">
+        select d.mno, d.nickname, m.id, m.name
+        from tbl_diver d inner join tbl_member m on d.mno = m.mno
+        <include refid="searchUser"/>
+    </select>
+
+    <insert id="insertMsg">
+        insert into tbl_message (fmno, tmno, content) values
+        <foreach collection="tmnoList" item="tmno" separator=",">
+            (#{fmno}, #{tmno}, #{content})
+        </foreach>
+    </insert>
+
+    <select id="selectOne" resultType="com.owus.shop.domain.message.MsgVO">
+        select m.bno, m.fmno, m.tmno, m.content, m.senddate, m.readdate,
+        max(case vm.mno when m.fmno then vm.nickname end) fnickname,
+        max(case vm.mno when m.tmno then vm.nickname end) tnickname
+        from view_members_info vm inner join tbl_message m on m.bno > 0 and vm.mno in (m.fmno, m.tmno)
+        <include refid="search"/>
+        group by m.bno
+        order by bno desc
+    </select>
+
+</mapper>

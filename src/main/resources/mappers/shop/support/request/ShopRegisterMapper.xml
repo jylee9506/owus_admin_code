@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.owus.shop.mapper.support.request.ShopRegisterMapper">
+
+  <select id="selectOneAll" resultType="com.owus.shop.domain.support.request.ShopAllVO">
+      select tm.mno, tm.id ,tm.phone,tm.name, tm.address,tm.email ,s.bznum,s.cfassoc,s.cfbz,s.cfcharging,s.cfmof,s.cfsafety, ifnull(s.state, 5) state
+      from tbl_member tm left join tbl_shop s on s.mno = tm.mno where tm.mno = #{mno}
+  </select>
+
+    <insert id="insert">
+       insert into  tbl_shop (mno,bzNum,cfBz,cfAssoc,cfMof,cfSafety,cfCharging,state,requestdate)
+       values (#{mno},#{bzNum},#{cfBz},#{cfAssoc},#{cfMof},#{cfSafety},#{cfCharging},2,now())
+    </insert>
+
+    <update id="modify">
+        update tbl_shop set
+            cfBz=#{cfBz}, bzNum=#{bzNum},
+            cfAssoc=#{cfAssoc}, cfMof=#{cfMof},
+            cfSafety=#{cfSafety}, cfCharging=#{cfCharging},
+            requestdate=now()
+        where mno = #{mno}
+    </update>
+
+</mapper>
